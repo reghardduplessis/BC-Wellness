@@ -34,8 +34,12 @@ public class LoginServlet extends HttpServlet {
             // Hash the input password
             String hashedPassword = AuthenticateUtils.hashPassword(password);
 
+            System.out.println("Attempting to connect to the database...");
+
             // Get DB connection
             try (Connection conn = DBUtils.getConnection()) {
+                System.out.println("✅ Successfully connected to the database.");
+
                 String sql = "SELECT student_number, name, password FROM users WHERE email = ?";
                 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                     stmt.setString(1, email);
@@ -49,7 +53,7 @@ public class LoginServlet extends HttpServlet {
                             HttpSession session = request.getSession(true);
                             session.setAttribute("user", email);
                             session.setAttribute("studentName", rs.getString("name"));
-                            session.setAttribute("studentNumber", rs.getString("studentNumber"));
+                            session.setAttribute("studentNumber", rs.getString("student_number")); // ✅ fixed key
                             response.sendRedirect("dashboard.jsp");
                         } else {
                             request.setAttribute("error", "Invalid email or password.");
@@ -62,7 +66,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("❌ Failed to connect or query database: " + e.getMessage());
             request.setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
