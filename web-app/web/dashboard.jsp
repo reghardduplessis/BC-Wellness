@@ -2,12 +2,12 @@
 <%--<%@ page import="javax.servlet.http.HttpSession" %>--%>
 <%
     HttpSession sessions = request.getSession(false);
-    if (sessions == null || session.getAttribute("studentName") == null) {
+    if (sessions == null || sessions.getAttribute("studentName") == null) {
         response.sendRedirect("login.jsp?error=Please+login+first");
         return;
     }
 
-    String studentName = (String) session.getAttribute("studentName");
+    String studentName = (String) sessions.getAttribute("studentName");
 %>
 <!DOCTYPE html>
 <html>
