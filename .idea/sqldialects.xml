@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/sql/desktopapp_schema.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/sql/shema_postgresql.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/sql/tabelCreation_schema.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/web-app/src/servlets/RegisterServlet.java" dialect="GenericSQL" />
+    <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>
