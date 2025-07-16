@@ -98,29 +98,27 @@
 <main class="main-content">
     <div class="register-container">
         <h2>Create Student Account</h2>
-
+        <% if (request.getAttribute("error") != null) { %>
+        <p style="color: red; text-align: center;"><%= request.getAttribute("error") %></p>
+        <% } %>
+        <% if (request.getParameter("success") != null) { %>
+        <p style="color: green; text-align: center;"><%= request.getParameter("success") %></p>
+        <% } %>
         <form action="RegisterServlet" method="post">
             <label for="studentNumber">Student Number:</label>
             <input type="text" name="studentNumber" required />
-
             <label for="name">First Name:</label>
             <input type="text" name="name" required />
-
             <label for="surname">Surname:</label>
             <input type="text" name="surname" required />
-
             <label for="email">Email:</label>
             <input type="email" name="email" required />
-
             <label for="phone">Phone:</label>
             <input type="text" name="phone" pattern="[0-9]{10}" required title="Enter a 10-digit phone number" />
-
             <label for="password">Password:</label>
             <input type="password" name="password" required minlength="6" />
-
             <input type="submit" value="Register" class="btn" />
         </form>
-
         <p style="text-align:center; margin-top: 10px;">
             Already have an account? <a href="login.jsp">Login here</a>
         </p>
