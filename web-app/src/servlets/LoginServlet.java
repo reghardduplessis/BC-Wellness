@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 
             // Get DB connection
             try (Connection conn = DBUtils.getConnection()) {
-                System.out.println("✅ Successfully connected to the database.");
+                System.out.println("Successfully connected to the database.");
 
                 String sql = "SELECT student_number, name, password FROM users WHERE email = ?";
                 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -48,12 +48,16 @@ public class LoginServlet extends HttpServlet {
                     if (rs.next()) {
                         String storedHash = rs.getString("password");
 
+                        // Debug logging to check if hashes match
+                        System.out.println("Entered hash: " + hashedPassword);
+                        System.out.println("Stored hash: " + storedHash);
+
                         if (hashedPassword.equals(storedHash)) {
                             // Login successful
                             HttpSession session = request.getSession(true);
                             session.setAttribute("user", email);
                             session.setAttribute("studentName", rs.getString("name"));
-                            session.setAttribute("studentNumber", rs.getString("student_number")); // ✅ fixed key
+                            session.setAttribute("studentNumber", rs.getString("student_number"));
                             response.sendRedirect("dashboard.jsp");
                         } else {
                             request.setAttribute("error", "Invalid email or password.");
@@ -66,7 +70,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("❌ Failed to connect or query database: " + e.getMessage());
+            System.err.println("Failed to connect or query database: " + e.getMessage());
             request.setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }

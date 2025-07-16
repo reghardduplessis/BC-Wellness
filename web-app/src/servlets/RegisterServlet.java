@@ -49,6 +49,7 @@ public class RegisterServlet extends HttpServlet {
         String hashedPassword = AuthenticateUtils.hashPassword(password);
 
         try (Connection conn = DBUtils.getConnection()) {
+            System.out.println("Successfully connected to the database.");
 
             // Check if the email already exists
             String checkSql = "SELECT COUNT(*) FROM users WHERE email = ?";
@@ -63,8 +64,8 @@ public class RegisterServlet extends HttpServlet {
             }
 
             // Insert new user
-            String InsertSQL = "INSERT INTO users (student_number, email, password, phone, name, surname) VALUES (?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(InsertSQL)) {
+            String sql = "INSERT INTO users (student_number, email, password, phone, name, surname) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, student_number);
                 stmt.setString(2, email);
                 stmt.setString(3, hashedPassword);
@@ -83,6 +84,7 @@ public class RegisterServlet extends HttpServlet {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            System.err.println("Failed to connect or query database: " + e.getMessage());
             request.setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
