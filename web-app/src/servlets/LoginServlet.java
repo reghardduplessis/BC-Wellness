@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -35,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 
             // Get DB connection
             try (Connection conn = DBUtils.getConnection()) {
-                String sql = "SELECT * FROM users WHERE email = ?";
+                String sql = "SELECT student_number, name, password FROM users WHERE email = ?";
                 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                     stmt.setString(1, email);
                     ResultSet rs = stmt.executeQuery();
@@ -45,9 +46,10 @@ public class LoginServlet extends HttpServlet {
 
                         if (hashedPassword.equals(storedHash)) {
                             // Login successful
-                            HttpSession session = request.getSession();
+                            HttpSession session = request.getSession(true);
                             session.setAttribute("user", email);
-                            session.setAttribute("studentName", rs.getString("name")); // if available in DB
+                            session.setAttribute("studentName", rs.getString("name"));
+                            session.setAttribute("studentNumber", rs.getString("studentNumber"));
                             response.sendRedirect("dashboard.jsp");
                         } else {
                             request.setAttribute("error", "Invalid email or password.");

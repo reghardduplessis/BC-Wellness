@@ -5,5 +5,5 @@ CREATE TABLE users (
                        phone VARCHAR(20),
                        name TEXT NOT NULL,
                        surname TEXT NOT NULL,
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
