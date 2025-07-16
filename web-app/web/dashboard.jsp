@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<%@ page import="javax.servlet.http.HttpSession" %>--%>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%
-    HttpSession sessions = request.getSession(false);
-    if (sessions == null || sessions.getAttribute("studentName") == null) {
+
+    if (session == null || session.getAttribute("studentName") == null) {
         response.sendRedirect("login.jsp?error=Please+login+first");
         return;
     }
 
-    String studentName = (String) sessions.getAttribute("studentName");
+    String studentName = (String) session.getAttribute("studentName");
 %>
 <!DOCTYPE html>
 <html>
@@ -24,7 +24,6 @@
             flex-direction: column;
         }
 
-        /* Navbar */
         .navbar {
             background-color: #2196F3;
             padding: 15px 30px;
@@ -95,7 +94,6 @@
             color: white;
         }
 
-
         .navbar form {
             display: inline;
         }
@@ -104,6 +102,7 @@
             margin-bottom: 20px;
             color: #2196F3;
         }
+
         .btn-logout {
             padding: 10px 20px;
             background: #2196F3;
@@ -112,6 +111,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .btn-logout:hover {
             background: #2167f3;
         }
@@ -141,7 +141,6 @@
             color: #555;
         }
 
-        /* Quick Actions */
         .quick-actions {
             margin: 0 auto;
             max-width: 900px;
@@ -166,6 +165,8 @@
             transition: all 0.2s ease;
             min-width: 200px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border: none;
         }
 
         .action-card:hover {
@@ -173,19 +174,80 @@
             transform: translateY(-2px);
         }
 
-        /* Upcoming Appointments */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .modal-content label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .modal-content input[type="submit"] {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-content input[type="submit"]:hover {
+            background-color: #2196F3;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
         .upcoming-section {
             margin: 50px auto;
             max-width: 900px;
             padding: 20px;
-            background-color: #ffffff;
+            background-color: #e3f2fd;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            color: #0d47a1;
         }
 
         .upcoming-section h2 {
             text-align: center;
-            color: #333;
+            color: #0d47a1;
         }
 
         .appointments-list {
@@ -198,13 +260,31 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            background-color: #f9f9f9;
+            background-color: #e3f2fd;
             width: 100%;
             max-width: 600px;
             text-align: center;
         }
 
-        /* Footer */
+        .review-message {
+            margin-top: 20px;
+            text-align: center;
+            color: #2196F3;
+        }
+
+        .counselor-list {
+            margin-top: 20px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #e3f2fd;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #0d47a1;
+        }
+
         .footer {
             background-color: #2196F3;
             color: #ffffff;
@@ -245,33 +325,93 @@
     <div class="quick-actions">
         <h2>Quick Actions</h2>
         <div class="actions-grid">
-            <a href="appointments.jsp" class="action-card">📅 Book Appointment</a>
-            <a href="reviews.jsp" class="action-card">📝 Submit Review</a>
-            <a href="counselors.jsp" class="action-card">🔍 Find Counselors</a>
+            <button onclick="openModal('appointmentModal')" class="action-card">📅 Book Appointment</button>
+            <button onclick="openModal('reviewModal')" class="action-card">📝 Submit Review</button>
+            <button onclick="openModal('counselorModal')" class="action-card">🔍 Find Counselor</button>
         </div>
     </div>
+
+    <!-- Review Message -->
+    <% if (request.getAttribute("reviewMessage") != null) { %>
+    <div class="review-message">
+        <%= request.getAttribute("reviewMessage") %>
+    </div>
+    <% } %>
+
+    <!-- Counselor List -->
+    <% if (request.getAttribute("counselors") != null) { %>
+    <div class="counselor-list">
+        <h4>Counselors</h4>
+        <%= request.getAttribute("counselors") %>
+    </div>
+    <% } %>
 
     <!-- Upcoming Appointments Section -->
     <div class="upcoming-section">
         <h2>Upcoming Appointments</h2>
         <div class="appointments-list">
-            <!-- Placeholder for dynamic content -->
             <div class="appointment-card">
+                <% if (request.getAttribute("upcomingAppointments") != null) { %>
+                <%= request.getAttribute("upcomingAppointments") %>
+                <% } else { %>
                 <strong>No upcoming appointments.</strong>
                 <p>Once you book, your next session will appear here.</p>
+                <% } %>
             </div>
         </div>
     </div>
-    
-        <form action="LogoutServlet" method="post">
-            <input type="submit" class="btn-logout" value="Logout" />
-        </form>
+
+    <form action="LogoutServlet" method="post">
+        <input type="submit" class="btn-logout" value="Logout" />
+    </form>
 
 </main>
 
 <!-- Footer -->
 <div class="footer">
     © 2025 Belgium Campus | Student Wellness Management System
+</div>
+
+<!-- Modals -->
+<div id="appointmentModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('appointmentModal')">×</span>
+        <h3>Book Appointment</h3>
+        <form action="AppointmentServlet" method="post">
+            <input type="hidden" name="action" value="book" />
+            <label for="appointmentName">Name:</label>
+            <input type="text" name="appointmentName" required />
+            <label for="appointmentDate">Date (YYYY-MM-DD):</label>
+            <input type="text" name="appointmentDate" pattern="\d{4}-\d{2}-\d{2}" required />
+            <label for="appointmentTime">Time (HH:MM):</label>
+            <input type="text" name="appointmentTime" pattern="\d{2}:\d{2}" required />
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+
+<div id="reviewModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('reviewModal')">×</span>
+        <h3>Submit Review</h3>
+        <form action="ReviewServlet" method="post">
+            <input type="hidden" name="action" value="submitReview" />
+            <label for="feedback">Feedback:</label>
+            <input type="text" name="feedback" required />
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+
+<div id="counselorModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('counselorModal')">×</span>
+        <h3>Find Counselor</h3>
+        <form action="CounselorServlet" method="post">
+            <input type="hidden" name="action" value="findCounselor" />
+            <input type="submit" value="Show Counselors" />
+        </form>
+    </div>
 </div>
 
 <script>
@@ -288,6 +428,14 @@
             }
         }
     };
+
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+    }
 </script>
 
 </body>
