@@ -38,9 +38,9 @@ public class DashboardController {
         this.dashboardPanel = view.getDashboardPanel();
 
         // Initialize controllers
-        this.counselorController = new CounselorController(counselorPanel);
-        this.appointmentController = new AppointmentController();
-        this.feedbackController = new FeedbackController();
+        this.counselorController = new CounselorController(model);
+        this.appointmentController = new AppointmentController(model);
+        this.feedbackController = new FeedbackController(model);
 
         model.initializeSampleData();
         setupAppointmentListeners();

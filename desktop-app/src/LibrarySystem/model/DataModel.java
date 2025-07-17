@@ -38,6 +38,7 @@ public class DataModel {
                         rs.getString("status")
                 ));
             }
+            System.out.println("Loaded " + appointments.size() + " appointments from database.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
