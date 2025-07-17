@@ -1,19 +1,31 @@
-CREATE TABLE Counselors(
-    name VARCHAR(20) NOT NULL,
-    specialization VARCHAR(20) NOT NULL,
-    availability VARCHAR(10) NOT NULL
+CREATE TABLE users (
+                       student_number VARCHAR(10) PRIMARY KEY,
+                       email VARCHAR(100),
+                       password VARCHAR(100),
+                       name VARCHAR(50),
+                       surname VARCHAR(50),
+                       created_at TIMESTAMP
 );
 
-CREATE TABLE Appointments(
-    student VARCHAR(20) NOT NULL,
-    counselor VARCHAR(20) NOT NULL,
-    date DATE NOT NULL,
-    time TIME NOT NULL,
-    status VARCHAR(20) NOT NULL
+CREATE TABLE Feedback (
+                          id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,  -- auto-incrementing
+                          student VARCHAR(255) NOT NULL,
+                          rating INT NOT NULL,
+                          comments VARCHAR(500)
 );
 
-CREATE TABLE Feedback(
-    student VARCHAR(20) NOT NULL,
-    rating INT CHECK ( rating BETWEEN 1 and 10),
-    comments VARCHAR(225)
+CREATE TABLE Counselors (
+                            id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                            name VARCHAR(100),
+                            specialization VARCHAR(100),
+                            availability VARCHAR(100)
+);
+
+CREATE TABLE Appointments (
+                              id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                              student VARCHAR(100),
+                              counselor VARCHAR(100),
+                              date VARCHAR(20),
+                              time VARCHAR(20),
+                              status VARCHAR(20)
 );
