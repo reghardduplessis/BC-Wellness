@@ -54,7 +54,7 @@ public class CounselorController {
         return list;
     }
 
-    public void updateCounselor(Counselor counselor) {
+    public void updateCounselor(int i, Counselor counselor) {
         String sql = "UPDATE Counselors SET name=?, specialization=?, availability=? WHERE id=?";
 
         try (Connection conn = DBConnection.getConnection();

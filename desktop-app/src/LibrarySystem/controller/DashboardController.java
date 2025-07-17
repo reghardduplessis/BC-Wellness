@@ -1,9 +1,6 @@
 package LibrarySystem.controller;
 
-import LibrarySystem.model.Appointment;
-import LibrarySystem.model.Counselor;
-import LibrarySystem.model.DataModel;
-import LibrarySystem.model.Feedback;
+import LibrarySystem.model.*;
 import LibrarySystem.view.*;
 
 import javax.swing.*;
@@ -22,6 +19,11 @@ public class DashboardController {
     private FeedbackPanel feedbackPanel;
     private DashboardPanel dashboardPanel;
 
+    // Controller instances
+    private CounselorController counselorController;
+    private AppointmentController appointmentController;
+    private FeedbackController feedbackController;
+
     // Define column names manually
     private static final String[] APPOINTMENT_COLUMNS = {"ID", "Student", "Counselor", "Date", "Time", "Status"};
     private static final String[] COUNSELOR_COLUMNS = {"ID", "Name", "Specialization", "Availability"};
@@ -34,6 +36,11 @@ public class DashboardController {
         this.counselorPanel = view.getCounselorPanel();
         this.feedbackPanel = view.getFeedbackPanel();
         this.dashboardPanel = view.getDashboardPanel();
+
+        // Initialize controllers
+        this.counselorController = new CounselorController(counselorPanel);
+        this.appointmentController = new AppointmentController();
+        this.feedbackController = new FeedbackController();
 
         model.initializeSampleData();
         setupAppointmentListeners();
@@ -71,8 +78,8 @@ public class DashboardController {
                     (String) appointmentPanel.getTableModel().getValueAt(row, 4),
                     (String) appointmentPanel.getTableModel().getValueAt(row, 5)
             );
-            model.updateAppointment(row + 1, app);
-            updateDashboard(); // Update dashboard after changes
+            appointmentController.updateAppointment(row + 1, app);
+            updateDashboard();
         });
 
         appointmentPanel.getTable().getSelectionModel().addListSelectionListener(e -> {
@@ -98,7 +105,7 @@ public class DashboardController {
                             appointmentPanel.getTimeField().getText(),
                             (String) appointmentPanel.getStatusCombo().getSelectedItem()
                     );
-                    model.addAppointment(app);
+                    appointmentController.addAppointment(app);
                     clearAppointmentForm();
                     updateAppointmentView();
                     updateDashboard();
@@ -120,7 +127,7 @@ public class DashboardController {
                             appointmentPanel.getTimeField().getText(),
                             (String) appointmentPanel.getStatusCombo().getSelectedItem()
                     );
-                    model.updateAppointment(selectedRow + 1, app);
+                    appointmentController.updateAppointment(selectedRow + 1, app);
                     updateAppointmentView();
                     updateDashboard();
                     JOptionPane.showMessageDialog(view, "Appointment updated successfully!");
@@ -137,7 +144,7 @@ public class DashboardController {
                 if (selectedRow >= 0) {
                     int confirm = JOptionPane.showConfirmDialog(view, "Are you sure you want to cancel this appointment?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        model.removeAppointment(selectedRow + 1);
+                        appointmentController.deleteAppointment(selectedRow + 1);
                         updateAppointmentView();
                         updateDashboard();
                         JOptionPane.showMessageDialog(view, "Appointment canceled successfully!");
@@ -152,7 +159,9 @@ public class DashboardController {
     private void setupCounselorListeners() {
         DefaultTableModel counselorModel = model.getCounselorTableModel();
         if (counselorModel != null) {
-            counselorPanel.getTableModel().setDataVector(counselorModel.getDataVector(), new Vector<>(List.of(COUNSELOR_COLUMNS)));
+            counselorPanel.getTableModel().setDataVector(counselorModel
+
+                    .getDataVector(), new Vector<>(List.of(COUNSELOR_COLUMNS)));
         } else {
             System.out.println("Error: Counselor table model is null");
         }
@@ -166,8 +175,8 @@ public class DashboardController {
                     (String) counselorPanel.getTableModel().getValueAt(row, 2),
                     (String) counselorPanel.getTableModel().getValueAt(row, 3)
             );
-            model.updateCounselor(row + 1, counselor);
-            updateDashboard(); // Update dashboard after changes
+            counselorController.updateCounselor(row + 1, counselor);
+            updateDashboard();
         });
 
         counselorPanel.getTable().getSelectionModel().addListSelectionListener(e -> {
@@ -189,7 +198,7 @@ public class DashboardController {
                             counselorPanel.getSpecializationField().getText(),
                             counselorPanel.getAvailabilityField().getText()
                     );
-                    model.addCounselor(counselor);
+                    counselorController.addCounselor(counselor);
                     clearCounselorForm();
                     updateCounselorView();
                     updateDashboard();
@@ -209,7 +218,7 @@ public class DashboardController {
                             counselorPanel.getSpecializationField().getText(),
                             counselorPanel.getAvailabilityField().getText()
                     );
-                    model.updateCounselor(selectedRow + 1, counselor);
+                    counselorController.updateCounselor(selectedRow + 1, counselor);
                     updateCounselorView();
                     updateDashboard();
                     JOptionPane.showMessageDialog(view, "Counselor updated successfully!");
@@ -226,7 +235,7 @@ public class DashboardController {
                 if (selectedRow >= 0) {
                     int confirm = JOptionPane.showConfirmDialog(view, "Are you sure you want to remove this counselor?", "Confirm Remove", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        model.removeCounselor(selectedRow + 1);
+                        counselorController.deleteCounselor(selectedRow + 1);
                         updateCounselorView();
                         updateDashboard();
                         JOptionPane.showMessageDialog(view, "Counselor removed successfully!");
@@ -249,13 +258,14 @@ public class DashboardController {
         feedbackPanel.getTableModel().addTableModelListener(e -> {
             if (e.getColumn() == -1) return; // Ignore structural changes
             int row = e.getFirstRow();
-            model.updateFeedback(row + 1, new Feedback(
+            Feedback feedback = new Feedback(
                     row + 1,
                     feedbackPanel.getTableModel().getValueAt(row, 1).toString(),
                     Integer.parseInt(feedbackPanel.getTableModel().getValueAt(row, 2).toString()),
                     feedbackPanel.getTableModel().getValueAt(row, 3).toString()
-            ));
-            updateDashboard(); // Update dashboard after changes
+            );
+            feedbackController.updateFeedback(row + 1, feedback);
+            updateDashboard();
         });
 
         feedbackPanel.getTable().getSelectionModel().addListSelectionListener(e -> {
@@ -277,7 +287,7 @@ public class DashboardController {
                             (Integer) feedbackPanel.getRatingCombo().getSelectedItem(),
                             feedbackPanel.getCommentsArea().getText()
                     );
-                    model.addFeedback(feedback);
+                    feedbackController.addFeedback(feedback);
                     clearFeedbackForm();
                     updateFeedbackView();
                     updateDashboard();
@@ -297,7 +307,7 @@ public class DashboardController {
                             (Integer) feedbackPanel.getRatingCombo().getSelectedItem(),
                             feedbackPanel.getCommentsArea().getText()
                     );
-                    model.updateFeedback(selectedRow + 1, feedback);
+                    feedbackController.updateFeedback(selectedRow + 1, feedback);
                     updateFeedbackView();
                     updateDashboard();
                     JOptionPane.showMessageDialog(view, "Feedback updated successfully!");
@@ -314,7 +324,7 @@ public class DashboardController {
                 if (selectedRow >= 0) {
                     int confirm = JOptionPane.showConfirmDialog(view, "Are you sure you want to delete this feedback?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        model.removeFeedback(selectedRow + 1);
+                        feedbackController.deleteFeedback(selectedRow + 1);
                         updateFeedbackView();
                         updateDashboard();
                         JOptionPane.showMessageDialog(view, "Feedback deleted successfully!");
