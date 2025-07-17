@@ -36,49 +36,101 @@ public class DataModel {
         return model;
     }
 
+    // Appointment management methods
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
 
     public void updateAppointment(int id, Appointment updatedAppointment) {
-        appointments.set(id - 1, updatedAppointment); // Simple update by ID (adjust as needed)
+        for (int i = 0; i < appointments.size(); i++) {
+            if (appointments.get(i).getId() == id) {
+                appointments.set(i, updatedAppointment);
+                return;
+            }
+        }
     }
 
     public void removeAppointment(int id) {
         appointments.removeIf(app -> app.getId() == id);
     }
 
+    // Counselor management methods
     public void addCounselor(Counselor counselor) {
         counselors.add(counselor);
     }
 
     public void updateCounselor(int id, Counselor updatedCounselor) {
-        counselors.set(id - 1, updatedCounselor); // Simple update by ID
+        for (int i = 0; i < counselors.size(); i++) {
+            if (counselors.get(i).getId() == id) {
+                counselors.set(i, updatedCounselor);
+                return;
+            }
+        }
     }
 
     public void removeCounselor(int id) {
         counselors.removeIf(coun -> coun.getId() == id);
     }
 
+    // Feedback management methods
     public void addFeedback(Feedback feedback) {
         feedbacks.add(feedback);
     }
 
     public void updateFeedback(int id, Feedback updatedFeedback) {
-        feedbacks.set(id - 1, updatedFeedback); // Simple update by ID
+        for (int i = 0; i < feedbacks.size(); i++) {
+            if (feedbacks.get(i).getId() == id) {
+                feedbacks.set(i, updatedFeedback);
+                return;
+            }
+        }
     }
 
     public void removeFeedback(int id) {
         feedbacks.removeIf(fb -> fb.getId() == id);
     }
 
+    // Sample data initialization for testing
     public void initializeSampleData() {
         appointments.add(new Appointment(1, "John Doe", "Dr. Smith", "2025-07-20", "10:00", "Scheduled"));
         counselors.add(new Counselor(1, "Dr. Smith", "Career Counseling", "Mon-Fri, 9-5"));
         feedbacks.add(new Feedback(1, "Jane Doe", 4, "Great session!"));
     }
 
+    // Getters for appointments, counselors, and feedbacks
     public List<Counselor> getCounselors() {
         return new ArrayList<>(counselors); // Return a copy to prevent external modification
+    }
+
+    public List<Appointment> getAppointments() {
+        return new ArrayList<>(appointments);
+    }
+
+    public List<Feedback> getFeedbacks() {
+        return new ArrayList<>(feedbacks);
+    }
+
+    // Method to get the next available ID for a new Counselor
+    public int getNextCounselorId() {
+        return counselors.stream()
+                .mapToInt(Counselor::getId)
+                .max()
+                .orElse(0) + 1;
+    }
+
+    // Method to get the next available ID for a new appointment
+    public int getNextAppointmentId() {
+        return appointments.stream()
+                .mapToInt(Appointment::getId)
+                .max()
+                .orElse(0) + 1;
+    }
+
+    // Method to get the next available ID for a new feedback
+    public int getNextFeedbackId() {
+        return feedbacks.stream()
+                .mapToInt(Feedback::getId)
+                .max()
+                .orElse(0) + 1;
     }
 }
