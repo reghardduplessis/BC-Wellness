@@ -74,7 +74,6 @@ public class DataModel {
             e.printStackTrace();
         }
     }
-    }
 
     // Counselor management methods
     public void addCounselor(Counselor counselor) {
@@ -156,3 +155,6 @@ public class DataModel {
                 .orElse(0) + 1;
     }
 }
+
+
+
