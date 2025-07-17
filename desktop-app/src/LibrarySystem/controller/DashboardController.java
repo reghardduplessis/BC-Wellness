@@ -37,8 +37,8 @@ public class DashboardController {
         this.feedbackPanel = view.getFeedbackPanel();
         this.dashboardPanel = view.getDashboardPanel();
 
-        // Initialize controllers
-        this.counselorController = new CounselorController(model);
+        // Initialize controllers with the same DataModel instance and this DashboardController
+        this.counselorController = new CounselorController(model, this);
         this.appointmentController = new AppointmentController(model);
         this.feedbackController = new FeedbackController(model);
 
@@ -442,11 +442,19 @@ public class DashboardController {
 
     private List<String> getCounselorNames() {
         List<String> names = new ArrayList<>();
-        names.add("Select Counselor");
+        names.add("Select Counselor"); // Default option
         for (Counselor counselor : model.getCounselors()) {
             names.add(counselor.getName());
         }
         return names;
+    }
+
+    public void refreshCounselorDropDown() {
+        SwingUtilities.invokeLater(() -> {
+            List<String> names = getCounselorNames();
+            appointmentPanel.getCounselorCombo().setModel(new DefaultComboBoxModel<>(names.toArray(new String[0])));
+            System.out.println("Refreshed counselor drop-down with " + names.size() + " options: " + String.join(", ", names));
+        });
     }
 
     private void updateViews() {
