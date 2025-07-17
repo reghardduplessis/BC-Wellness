@@ -50,8 +50,8 @@ public class DataModel {
 
             stmt.setString(1, appointment.getStudent());
             stmt.setString(2, appointment.getCounselor());
-            stmt.setDate(3, java.sql.Date.valueOf(appointment.getDate()));
-            stmt.setTime(4, java.sql.Time.valueOf(appointment.getTime()));
+            stmt.setString(3, appointment.getDate());
+            stmt.setString(4, appointment.getTime());
             stmt.setString(5, appointment.getStatus());
             stmt.setInt(6, id);
 

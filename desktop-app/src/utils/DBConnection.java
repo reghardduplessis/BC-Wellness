@@ -15,13 +15,14 @@ public class DBConnection {
     private DBConnection() {}
 
     public static Connection getConnection() {
-            if (connection == null) {
-            try {
+        try {
+            if (connection == null || connection.isClosed()) {
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return connection;
     }
+
 }
