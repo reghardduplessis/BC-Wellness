@@ -119,18 +119,23 @@ public class DashboardController {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = appointmentPanel.getTable().getSelectedRow();
                 if (selectedRow >= 0 && validateAppointmentForm()) {
+                    int id = (Integer) appointmentPanel.getTableModel().getValueAt(selectedRow, 0);
                     Appointment app = new Appointment(
-                            selectedRow + 1,
+                            id, // Use the ID from the table
                             appointmentPanel.getStudentField().getText(),
                             (String) appointmentPanel.getCounselorCombo().getSelectedItem(),
                             appointmentPanel.getDateField().getText(),
                             appointmentPanel.getTimeField().getText(),
                             (String) appointmentPanel.getStatusCombo().getSelectedItem()
                     );
-                    appointmentController.updateAppointment(selectedRow + 1, app);
-                    updateAppointmentView();
-                    updateDashboard();
-                    JOptionPane.showMessageDialog(view, "Appointment updated successfully!");
+                    try {
+                        appointmentController.updateAppointment(id, app);
+                        updateAppointmentView();
+                        updateDashboard();
+                        JOptionPane.showMessageDialog(view, "Appointment updated successfully!");
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(view, "Error updating appointment: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(view, "Please select an appointment to update.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -212,13 +217,15 @@ public class DashboardController {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = counselorPanel.getTable().getSelectedRow();
                 if (selectedRow >= 0 && validateCounselorForm()) {
+                    int id = (Integer) counselorPanel.getTableModel().getValueAt(selectedRow, 0);
+                    System.out.println("Attempting to update Counselor ID: " + id);
                     Counselor counselor = new Counselor(
-                            selectedRow + 1,
+                            id,
                             counselorPanel.getNameField().getText(),
                             counselorPanel.getSpecializationField().getText(),
                             counselorPanel.getAvailabilityField().getText()
                     );
-                    counselorController.updateCounselor(selectedRow + 1, counselor);
+                    counselorController.updateCounselor(id, counselor);
                     updateCounselorView();
                     updateDashboard();
                     JOptionPane.showMessageDialog(view, "Counselor updated successfully!");
@@ -301,13 +308,15 @@ public class DashboardController {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = feedbackPanel.getTable().getSelectedRow();
                 if (selectedRow >= 0 && validateFeedbackForm()) {
+                    int id = (Integer) feedbackPanel.getTableModel().getValueAt(selectedRow, 0);
+                    System.out.println("Attempting to update Feedback ID: " + id);
                     Feedback feedback = new Feedback(
-                            selectedRow + 1,
+                            id,
                             feedbackPanel.getStudentField().getText(),
                             (Integer) feedbackPanel.getRatingCombo().getSelectedItem(),
                             feedbackPanel.getCommentsArea().getText()
                     );
-                    feedbackController.updateFeedback(selectedRow + 1, feedback);
+                    feedbackController.updateFeedback(id, feedback);
                     updateFeedbackView();
                     updateDashboard();
                     JOptionPane.showMessageDialog(view, "Feedback updated successfully!");

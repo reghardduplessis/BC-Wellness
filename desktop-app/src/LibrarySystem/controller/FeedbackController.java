@@ -14,6 +14,7 @@ public class FeedbackController {
     }
 
     public void updateFeedback(int id, Feedback feedback) {
+        System.out.println("FeedbackController: Updating ID " + id + ", Student: " + feedback.getStudent());
         model.updateFeedback(id, feedback);
     }
 

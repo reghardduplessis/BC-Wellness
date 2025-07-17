@@ -14,6 +14,7 @@ public class CounselorController {
     }
 
     public void updateCounselor(int id, Counselor counselor) {
+        System.out.println("CounselorController: Updating ID " + id + ", Name: " + counselor.getName());
         model.updateCounselor(id, counselor);
     }
 

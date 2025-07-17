@@ -138,6 +138,7 @@ public class DataModel {
 
     public void updateAppointment(int id, Appointment appointment) {
         String sql = "UPDATE Appointments SET student = ?, counselor = ?, date = ?, time = ?, status = ? WHERE id = ?";
+        boolean updated = false;
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, appointment.getStudent());
@@ -146,12 +147,19 @@ public class DataModel {
             stmt.setString(4, appointment.getTime());
             stmt.setString(5, appointment.getStatus());
             stmt.setInt(6, id);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            updated = rowsAffected > 0;
+            System.out.println("Update for ID " + id + " affected " + rowsAffected + " rows.");
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("SQL Error updating appointment ID " + id + ": " + e.getMessage());
         }
-        // Refresh in-memory list
-        loadAppointments();
+        if (updated) {
+            loadAppointments();
+        } else {
+            System.out.println("No appointment found with ID " + id + " for update.");
+            loadAppointments(); // Reload anyway to ensure consistency
+        }
     }
 
     public void removeAppointment(int id) {
@@ -194,18 +202,26 @@ public class DataModel {
 
     public void updateCounselor(int id, Counselor updatedCounselor) {
         String sql = "UPDATE Counselors SET name = ?, specialization = ?, availability = ? WHERE id = ?";
+        boolean updated = false;
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, updatedCounselor.getName());
             stmt.setString(2, updatedCounselor.getSpecialization());
             stmt.setString(3, updatedCounselor.getAvailability());
             stmt.setInt(4, id);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            updated = rowsAffected > 0;
+            System.out.println("Update for Counselor ID " + id + " affected " + rowsAffected + " rows.");
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("SQL Error updating counselor ID " + id + ": " + e.getMessage());
         }
-        // Refresh in-memory list
-        loadCounselors();
+        if (updated) {
+            loadCounselors();
+        } else {
+            System.out.println("No counselor found with ID " + id + " for update.");
+            loadCounselors(); // Reload anyway to ensure consistency
+        }
     }
 
     public void removeCounselor(int id) {
@@ -248,18 +264,26 @@ public class DataModel {
 
     public void updateFeedback(int id, Feedback updatedFeedback) {
         String sql = "UPDATE Feedback SET student = ?, rating = ?, comments = ? WHERE id = ?";
+        boolean updated = false;
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, updatedFeedback.getStudent());
             stmt.setInt(2, updatedFeedback.getRating());
             stmt.setString(3, updatedFeedback.getComments());
             stmt.setInt(4, id);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            updated = rowsAffected > 0;
+            System.out.println("Update for Feedback ID " + id + " affected " + rowsAffected + " rows.");
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("SQL Error updating feedback ID " + id + ": " + e.getMessage());
         }
-        // Refresh in-memory list
-        loadFeedbacks();
+        if (updated) {
+            loadFeedbacks();
+        } else {
+            System.out.println("No feedback found with ID " + id + " for update.");
+            loadFeedbacks(); // Reload anyway to ensure consistency
+        }
     }
 
     public void removeFeedback(int id) {

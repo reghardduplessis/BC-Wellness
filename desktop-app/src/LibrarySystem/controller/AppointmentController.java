@@ -14,6 +14,7 @@ public class AppointmentController {
     }
 
     public void updateAppointment(int id, Appointment appointment) {
+        System.out.println("Updating appointment with ID: " + id + ", Student: " + appointment.getStudent());
         model.updateAppointment(id, appointment);
     }
 
