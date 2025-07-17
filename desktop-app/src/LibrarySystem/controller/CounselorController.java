@@ -2,6 +2,8 @@ package LibrarySystem.controller;
 
 import LibrarySystem.model.*;
 
+import java.sql.SQLException;
+
 public class CounselorController {
     private DataModel model;
     private DashboardController dashboardController;
@@ -13,7 +15,11 @@ public class CounselorController {
 
     public void addCounselor(Counselor counselor) {
         System.out.println("CounselorController: Adding counselor - Name: " + counselor.getName());
-        model.addCounselor(counselor);
+        try {
+            model.addCounselor(counselor);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         if (dashboardController != null) {
             dashboardController.refreshCounselorDropDown();
         }

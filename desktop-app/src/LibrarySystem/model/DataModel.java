@@ -177,7 +177,7 @@ public class DataModel {
     }
 
     // Counselor management methods
-    public int addCounselor(Counselor counselor) {
+    public int addCounselor(Counselor counselor) throws SQLException {
         String sql = "INSERT INTO Counselors (name, specialization, availability) VALUES (?, ?, ?)";
         int generatedId = -1;
         try (Connection conn = DBConnection.getConnection();
@@ -187,17 +187,19 @@ public class DataModel {
             stmt.setString(3, counselor.getAvailability());
             stmt.executeUpdate();
 
-            // Retrieve the generated ID
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     generatedId = rs.getInt(1);
                 }
             }
+            System.out.println("Added counselor with ID: " + generatedId + ", Name: " + counselor.getName());
         } catch (SQLException e) {
+            System.out.println("SQL Error adding counselor: " + e.getMessage());
             e.printStackTrace();
+            throw e; // Re-throw to be caught in the controller
         }
-        // Refresh in-memory list
         loadCounselors();
+        System.out.println("Counselors list size after load: " + counselors.size());
         return generatedId;
     }
 

@@ -200,15 +200,17 @@ public class DashboardController {
             public void actionPerformed(ActionEvent e) {
                 if (validateCounselorForm()) {
                     Counselor counselor = new Counselor(
-                            model.getNextCounselorId(), // Use DataModel to get the next ID
+                            0,
                             counselorPanel.getNameField().getText(),
                             counselorPanel.getSpecializationField().getText(),
                             counselorPanel.getAvailabilityField().getText()
                     );
+                    System.out.println("Adding new counselor: " + counselor.getName());
                     counselorController.addCounselor(counselor);
                     clearCounselorForm();
                     updateCounselorView();
                     updateDashboard();
+                    refreshCounselorDropDown(); // Manual refresh
                     JOptionPane.showMessageDialog(view, "Counselor added successfully!");
                 }
             }
