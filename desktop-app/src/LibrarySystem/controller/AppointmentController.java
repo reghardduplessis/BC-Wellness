@@ -47,5 +47,36 @@ public class AppointmentController {
         return list;
     }
 
-    // TODO: updateAppointment(), deleteAppointment() etc.
+    // Update an appointment in the database
+    public static void updateAppointment(int id, Appointment a) {
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "UPDATE Appointments SET student = ?, counselor = ?, date = ?, time = ?, status = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, a.getStudent());
+            ps.setString(2, a.getCounselor());
+            ps.setString(3, a.getDate());
+            ps.setString(4, a.getTime());
+            ps.setString(5, a.getStatus());
+            ps.setInt(6, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Delete an appointment from the database
+    public static void deleteAppointment(int id) {
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "DELETE FROM Appointments WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
 }

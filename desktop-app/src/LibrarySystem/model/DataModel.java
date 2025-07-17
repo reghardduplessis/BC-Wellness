@@ -1,8 +1,10 @@
 package LibrarySystem.model;
 
+import utils.DBConnection;
+
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
 public class DataModel {
     private List<Appointment> appointments = new ArrayList<>();
@@ -41,17 +43,37 @@ public class DataModel {
         appointments.add(appointment);
     }
 
-    public void updateAppointment(int id, Appointment updatedAppointment) {
-        for (int i = 0; i < appointments.size(); i++) {
-            if (appointments.get(i).getId() == id) {
-                appointments.set(i, updatedAppointment);
-                return;
-            }
+    public void updateAppointment(int id, Appointment appointment) {
+        String sql = "UPDATE Appointments SET student = ?, counselor = ?, date = ?, time = ?, status = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, appointment.getStudent());
+            stmt.setString(2, appointment.getCounselor());
+            stmt.setDate(3, java.sql.Date.valueOf(appointment.getDate()));
+            stmt.setTime(4, java.sql.Time.valueOf(appointment.getTime()));
+            stmt.setString(5, appointment.getStatus());
+            stmt.setInt(6, id);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     public void removeAppointment(int id) {
         appointments.removeIf(app -> app.getId() == id);
+
+        String sql = "DELETE FROM Appointments WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     }
 
     // Counselor management methods
