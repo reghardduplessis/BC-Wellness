@@ -38,7 +38,7 @@ public class CounselorPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; formPanel.add(addButton, gbc);
 
         // Table panel
-        String[] columns = {"ID", "Name", "Specialization", "Availability"};
+        String[] columns = {"Name", "Specialization", "Availability"};
         tableModel = new DefaultTableModel(columns, 0);
         counselorTable = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(counselorTable);

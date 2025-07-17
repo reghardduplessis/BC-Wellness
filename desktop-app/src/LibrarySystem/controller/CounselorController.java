@@ -31,7 +31,6 @@ public class CounselorController {
 
             while (rs.next()) {
                 list.add(new Counselor(
-                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("specialization"),
                         rs.getString("availability")
