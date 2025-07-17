@@ -1,6 +1,7 @@
 package LibrarySystem.controller;
 
 import LibrarySystem.model.Counselor;
+import LibrarySystem.view.CounselorPanel;
 import utils.DBConnection;
 
 import java.sql.*;
@@ -8,11 +9,18 @@ import java.util.ArrayList;
 
 public class CounselorController {
 
-    public static void addCounselor(Counselor c) {
-        try {
-            Connection conn = DBConnection.getConnection();
-            String sql = "INSERT INTO Counselors (name, specialization, availability) VALUES (?, ?, ?)";
-            PreparedStatement ps = conn.prepareStatement(sql);
+    private CounselorPanel view;
+
+    public CounselorController(CounselorPanel view) {
+        this.view = view;
+    }
+
+    public void addCounselor(Counselor c) {
+        String sql = "INSERT INTO Counselors (name, specialization, availability) VALUES (?, ?, ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, c.getName());
             ps.setString(2, c.getSpecialization());
             ps.setString(3, c.getAvailability());
@@ -22,11 +30,13 @@ public class CounselorController {
         }
     }
 
-    public static ArrayList<Counselor> getAllCounselors() {
+    public ArrayList<Counselor> getAllCounselors() {
         ArrayList<Counselor> list = new ArrayList<>();
+        String sql = "SELECT * FROM Counselors";
+
         try (Connection conn = DBConnection.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM Counselors")) {
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 list.add(new Counselor(
@@ -40,10 +50,11 @@ public class CounselorController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return list;
     }
 
-    public static void updateCounselor(Counselor counselor) {
+    public void updateCounselor(Counselor counselor) {
         String sql = "UPDATE Counselors SET name=?, specialization=?, availability=? WHERE id=?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -60,13 +71,12 @@ public class CounselorController {
             } else {
                 System.out.println("[INFO] No counselor found with ID: " + counselor.getId());
             }
-
         } catch (SQLException e) {
             System.err.println("[ERROR] Failed to update counselor: " + e.getMessage());
         }
     }
 
-    public static void deleteCounselor(int id) {
+    public void deleteCounselor(int id) {
         String sql = "DELETE FROM Counselors WHERE id=?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -86,11 +96,12 @@ public class CounselorController {
         }
     }
 
-    // Get the next available counselor ID
-    public static int getNextCounselorId() {
+    public int getNextCounselorId() {
+        String sql = "SELECT MAX(id) FROM Counselors";
+
         try (Connection conn = DBConnection.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM Counselors")) {
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             if (rs.next()) {
                 return rs.getInt(1) + 1;
@@ -99,7 +110,7 @@ public class CounselorController {
         } catch (SQLException e) {
             System.err.println("[ERROR] Failed to get next counselor ID: " + e.getMessage());
         }
-        return 1; // Start from 1 if table is empty
-    }
 
+        return 1;
+    }
 }

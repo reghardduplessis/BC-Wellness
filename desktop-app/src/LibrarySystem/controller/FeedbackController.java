@@ -1,11 +1,19 @@
 package LibrarySystem.controller;
 
 import LibrarySystem.model.Feedback;
-import utils.*;
+import LibrarySystem.view.FeedbackPanel;
+import utils.DBConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 
 public class FeedbackController {
+    private static FeedbackPanel feedbackPanel;
+
+    // Inject the view component
+    public static void setFeedbackPanel(FeedbackPanel panel) {
+        feedbackPanel = panel;
+    }
 
     public static void addFeedback(Feedback f) {
         String sql = "INSERT INTO Feedback (student, rating, comments) VALUES (?, ?, ?)";
@@ -16,8 +24,8 @@ public class FeedbackController {
             ps.setString(1, f.getStudent());
             ps.setInt(2, f.getRating());
             ps.setString(3, f.getComments());
-
             ps.executeUpdate();
+
             System.out.println("Feedback added successfully.");
 
         } catch (SQLException e) {
@@ -44,7 +52,7 @@ public class FeedbackController {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error retrieving feedback: " + e.getMessage());
+            System.err.println("❌ Error retrieving feedback: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -63,10 +71,11 @@ public class FeedbackController {
             ps.setInt(4, id);
 
             int rowsUpdated = ps.executeUpdate();
+
             if (rowsUpdated > 0) {
                 System.out.println("Feedback updated successfully.");
             } else {
-                System.out.println("No feedback found with ID: " + id);
+                System.out.println("⚠No feedback found with ID: " + id);
             }
 
         } catch (SQLException e) {
@@ -84,10 +93,11 @@ public class FeedbackController {
             ps.setInt(1, id);
 
             int rowsDeleted = ps.executeUpdate();
+
             if (rowsDeleted > 0) {
                 System.out.println("Feedback deleted successfully.");
             } else {
-                System.out.println("No feedback found with ID: " + id);
+                System.out.println(" No feedback found with ID: " + id);
             }
 
         } catch (SQLException e) {

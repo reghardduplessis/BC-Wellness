@@ -1,6 +1,7 @@
 package LibrarySystem.controller;
 
 import LibrarySystem.model.Appointment;
+import LibrarySystem.view.AppointmentPanel;
 import utils.DBConnection;
 
 import java.sql.*;
@@ -9,27 +10,31 @@ import java.util.ArrayList;
 public class AppointmentController {
 
     public static void addAppointment(Appointment a) {
-        try {
-            Connection conn = DBConnection.getConnection();
-            String sql = "INSERT INTO Appointments (student, counselor, date, time, status) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement ps = conn.prepareStatement(sql);
+        String sql = "INSERT INTO Appointments (student, counselor, date, time, status) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, a.getStudent());
             ps.setString(2, a.getCounselor());
             ps.setString(3, a.getDate());
             ps.setString(4, a.getTime());
             ps.setString(5, a.getStatus());
             ps.executeUpdate();
+
+            System.out.println("Appointment added successfully.");
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error adding appointment: " + e.getMessage());
         }
     }
 
     public static ArrayList<Appointment> getAllAppointments() {
         ArrayList<Appointment> list = new ArrayList<>();
-        try {
-            Connection conn = DBConnection.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Appointments");
+        String sql = "SELECT * FROM Appointments";
+
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 list.add(new Appointment(
@@ -41,18 +46,19 @@ public class AppointmentController {
                         rs.getString("status")
                 ));
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error retrieving appointments: " + e.getMessage());
         }
+
         return list;
     }
 
-    // Update an appointment in the database
     public static void updateAppointment(int id, Appointment a) {
-        try {
-            Connection conn = DBConnection.getConnection();
-            String sql = "UPDATE Appointments SET student = ?, counselor = ?, date = ?, time = ?, status = ? WHERE id = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+        String sql = "UPDATE Appointments SET student = ?, counselor = ?, date = ?, time = ?, status = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, a.getStudent());
             ps.setString(2, a.getCounselor());
             ps.setString(3, a.getDate());
@@ -60,21 +66,26 @@ public class AppointmentController {
             ps.setString(5, a.getStatus());
             ps.setInt(6, id);
             ps.executeUpdate();
+
+            System.out.println("Appointment updated successfully.");
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error updating appointment: " + e.getMessage());
         }
     }
 
-    // Delete an appointment from the database
     public static void deleteAppointment(int id) {
-        try {
-            Connection conn = DBConnection.getConnection();
-            String sql = "DELETE FROM Appointments WHERE id = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+        String sql = "DELETE FROM Appointments WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, id);
             ps.executeUpdate();
+
+            System.out.println("Appointment deleted successfully.");
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error deleting appointment: " + e.getMessage());
         }
     }
 }
