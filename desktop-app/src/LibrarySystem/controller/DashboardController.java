@@ -98,7 +98,7 @@ public class DashboardController {
             public void actionPerformed(ActionEvent e) {
                 if (validateAppointmentForm()) {
                     Appointment app = new Appointment(
-                            model.getAppointmentTableModel().getRowCount() + 1,
+                            model.getNextAppointmentId(), // Use DataModel to get the next ID
                             appointmentPanel.getStudentField().getText(),
                             (String) appointmentPanel.getCounselorCombo().getSelectedItem(),
                             appointmentPanel.getDateField().getText(),
@@ -193,7 +193,7 @@ public class DashboardController {
             public void actionPerformed(ActionEvent e) {
                 if (validateCounselorForm()) {
                     Counselor counselor = new Counselor(
-                            model.getCounselorTableModel().getRowCount() + 1,
+                            model.getNextCounselorId(), // Use DataModel to get the next ID
                             counselorPanel.getNameField().getText(),
                             counselorPanel.getSpecializationField().getText(),
                             counselorPanel.getAvailabilityField().getText()
@@ -282,7 +282,7 @@ public class DashboardController {
             public void actionPerformed(ActionEvent e) {
                 if (validateFeedbackForm()) {
                     Feedback feedback = new Feedback(
-                            model.getFeedbackTableModel().getRowCount() + 1,
+                            model.getNextFeedbackId(), // Use DataModel to get the next ID
                             feedbackPanel.getStudentField().getText(),
                             (Integer) feedbackPanel.getRatingCombo().getSelectedItem(),
                             feedbackPanel.getCommentsArea().getText()
