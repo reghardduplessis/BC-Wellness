@@ -19,6 +19,7 @@ public class FeedbackController {
     }
 
     public void deleteFeedback(int id) {
+        System.out.println("FeedbackController: Deleting ID " + id);
         model.removeFeedback(id);
     }
 }

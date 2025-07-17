@@ -167,11 +167,12 @@ public class DataModel {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("Deleted " + rowsAffected + " rows for Appointment ID " + id);
         } catch (SQLException e) {
+            System.out.println("Error deleting appointment ID " + id + ": " + e.getMessage());
             e.printStackTrace();
         }
-        // Refresh in-memory list
         loadAppointments();
     }
 
@@ -229,11 +230,12 @@ public class DataModel {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("Deleted " + rowsAffected + " rows for Counselor ID " + id);
         } catch (SQLException e) {
+            System.out.println("Error deleting counselor ID " + id + ": " + e.getMessage());
             e.printStackTrace();
         }
-        // Refresh in-memory list
         loadCounselors();
     }
 
@@ -291,11 +293,12 @@ public class DataModel {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("Deleted " + rowsAffected + " rows for Feedback ID " + id);
         } catch (SQLException e) {
+            System.out.println("Error deleting feedback ID " + id + ": " + e.getMessage());
             e.printStackTrace();
         }
-        // Refresh in-memory list
         loadFeedbacks();
     }
 

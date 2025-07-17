@@ -149,7 +149,9 @@ public class DashboardController {
                 if (selectedRow >= 0) {
                     int confirm = JOptionPane.showConfirmDialog(view, "Are you sure you want to cancel this appointment?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        appointmentController.deleteAppointment(selectedRow + 1);
+                        int id = (Integer) appointmentPanel.getTableModel().getValueAt(selectedRow, 0);
+                        System.out.println("Attempting to cancel Appointment ID: " + id);
+                        appointmentController.deleteAppointment(id);
                         updateAppointmentView();
                         updateDashboard();
                         JOptionPane.showMessageDialog(view, "Appointment canceled successfully!");
@@ -242,7 +244,9 @@ public class DashboardController {
                 if (selectedRow >= 0) {
                     int confirm = JOptionPane.showConfirmDialog(view, "Are you sure you want to remove this counselor?", "Confirm Remove", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        counselorController.deleteCounselor(selectedRow + 1);
+                        int id = (Integer) counselorPanel.getTableModel().getValueAt(selectedRow, 0);
+                        System.out.println("Attempting to remove Counselor ID: " + id);
+                        counselorController.deleteCounselor(id);
                         updateCounselorView();
                         updateDashboard();
                         JOptionPane.showMessageDialog(view, "Counselor removed successfully!");
@@ -333,7 +337,9 @@ public class DashboardController {
                 if (selectedRow >= 0) {
                     int confirm = JOptionPane.showConfirmDialog(view, "Are you sure you want to delete this feedback?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        feedbackController.deleteFeedback(selectedRow + 1);
+                        int id = (Integer) feedbackPanel.getTableModel().getValueAt(selectedRow, 0);
+                        System.out.println("Attempting to delete Feedback ID: " + id);
+                        feedbackController.deleteFeedback(id);
                         updateFeedbackView();
                         updateDashboard();
                         JOptionPane.showMessageDialog(view, "Feedback deleted successfully!");

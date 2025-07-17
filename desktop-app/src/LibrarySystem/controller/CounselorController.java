@@ -19,6 +19,7 @@ public class CounselorController {
     }
 
     public void deleteCounselor(int id) {
+        System.out.println("CounselorController: Deleting ID " + id);
         model.removeCounselor(id);
     }
 }

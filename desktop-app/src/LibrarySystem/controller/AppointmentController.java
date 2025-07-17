@@ -19,6 +19,7 @@ public class AppointmentController {
     }
 
     public void deleteAppointment(int id) {
+        System.out.println("AppointmentController: Deleting ID " + id);
         model.removeAppointment(id);
     }
 }
