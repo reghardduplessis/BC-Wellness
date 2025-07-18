@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
                             session.setAttribute("user", email);
                             session.setAttribute("studentName", rs.getString("name"));
                             session.setAttribute("studentNumber", rs.getString("student_number"));
-                            response.sendRedirect("dashboard.jsp");
+                            response.sendRedirect("index.jsp");
                         } else {
                             request.setAttribute("error", "Invalid email or password.");
                             request.getRequestDispatcher("login.jsp").forward(request, response);
