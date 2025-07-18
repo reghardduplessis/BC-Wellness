@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 public class CounselorController {
     private DataModel model;
-    private DashboardController dashboardController;
+    private ControllerHub controllerHub;
 
-    public CounselorController(DataModel model, DashboardController dashboardController) {
+    public CounselorController(DataModel model, ControllerHub controllerHub) {
         this.model = model; // Inject DataModel instance
-        this.dashboardController = this.dashboardController;
+        this.controllerHub = this.controllerHub;
     }
 
     public void addCounselor(Counselor counselor) {
@@ -20,8 +20,8 @@ public class CounselorController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (dashboardController != null) {
-            dashboardController.refreshCounselorDropDown();
+        if (controllerHub != null) {
+            controllerHub.refreshCounselorDropDown();
         }
     }
 

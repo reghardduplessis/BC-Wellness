@@ -1,6 +1,6 @@
 package LibrarySystem.view;
 
-import LibrarySystem.controller.DashboardController;
+import LibrarySystem.controller.ControllerHub;
 import LibrarySystem.model.DataModel;
 import utils.DBConnection;
 import utils.DatabaseSetup;
@@ -13,7 +13,7 @@ public class MainDashboard extends JFrame {
         SwingUtilities.invokeLater(() -> {
             DataModel model = new DataModel();
             DashboardView view = new DashboardView();
-            new DashboardController(model, view);
+            new ControllerHub(model, view);
             view.setVisible(true);
         });
     }
@@ -51,7 +51,7 @@ public class MainDashboard extends JFrame {
         SwingUtilities.invokeLater(() -> {
             DataModel model = new DataModel();
             DashboardView view = new DashboardView();
-            new DashboardController(model, view);
+            new ControllerHub(model, view);
             view.setVisible(true);
         });
     }

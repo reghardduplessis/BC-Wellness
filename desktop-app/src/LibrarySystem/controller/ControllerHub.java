@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class DashboardController {
+public class ControllerHub {
     private DataModel model;
     private DashboardView view;
     private AppointmentPanel appointmentPanel;
@@ -29,7 +29,7 @@ public class DashboardController {
     private static final String[] COUNSELOR_COLUMNS = {"ID", "Name", "Specialization", "Availability"};
     private static final String[] FEEDBACK_COLUMNS = {"ID", "Student", "Rating", "Comments"};
 
-    public DashboardController(DataModel model, DashboardView view) {
+    public ControllerHub(DataModel model, DashboardView view) {
         this.model = model;
         this.view = view;
         this.appointmentPanel = view.getAppointmentPanel();
