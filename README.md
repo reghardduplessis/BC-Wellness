@@ -1,5 +1,10 @@
 # BC Student Wellness Management System
 
+## Old Repository
+This is a second repository that was used after our previous one, linked below, suffered due to a major merge conflict.
+- https://github.com/reghardduplessis/Wellness-Management-System
+
+
 ## 📘 Overview
 
 This is a Java-based application developed as part of the **PRG3781 Project (2025)** for **Belgium Campus**. The system assists with student wellness management by providing:
