@@ -1,6 +1,9 @@
 # BC Student Wellness Management System
 
-## THIS IS PLACEHOLDER INFO
+## Old Repository
+This is a second repository that was used after our previous one, linked below, suffered due to a major merge conflict.
+- https://github.com/reghardduplessis/Wellness-Management-System
+
 
 ## 📘 Overview
 
@@ -29,55 +32,49 @@ This is a Java-based application developed as part of the **PRG3781 Project (202
 ## 📁 Project Structure
 
 ```bash
-BC-Wellness-Management/
-├── web-app/
-│ ├── index.jsp
-│ ├── login.jsp
-│ ├── register.jsp
-│ ├── dashboard.jsp
-│ └── /servlets/
-│ ├── LoginServlet.java
-│ └── RegisterServlet.java
-├── desktop-app/
-│ ├── /src/
-│ ├── model/
-│ ├── view/
-│ └── controller/
-│ ├── MainApp.java
-│ └── db/
-│ └── JavaDBConnection.java
-├── sql/
-│ └── schema_postgresql.sql
-├── README.md
-└── LICENSE
-
 Wellness-Management-System/
 ├── desktop-app/
+│   ├── src/
+│   │   ├── lib/                          # Derby JARs for JavaDB
+│   │   └── LibrarySystem/
+│   │       ├── controller/              # MVC Controllers
+│   │       ├── model/                   # Data Models (Appointment, Counselor, Feedback, etc.)
+│   │       ├── view/                    # GUI Panels (AppointmentPanel, FeedbackPanel, etc.)
+│   │       └── utils/                   # DB setup & connection utilities
+│   │           ├── DBConnection.java
+│   │           ├── DatabaseSetup.java
+│   │           └── TestConnection.java
+│   ├── desktop-app.iml                  # IntelliJ module config
 │
 ├── web-app/
 │   ├── src/
-│   │   ├── servlets/
+│   │   ├── servlets/                    # Java Servlets (Login, Register)
 │   │   │   ├── LoginServlet.java
 │   │   │   └── RegisterServlet.java
-│   │   └── utils/
-│   │        └── AuthUtils.java
-│   │
-│   ├── web/                                ← Web root folder
-│   │    ├── index.jsp                      ← Homepage
-│   │    ├── login.jsp                      ← Login form
-│   │    ├── register.jsp                   ← Registration form
-│   │    └── WEB-INF/                  
-│   │        └── web.xml                    ← Deployment descriptor (mandatory for Tomcat)
-│   │
-│   ├── .idea/                              ← IntelliJ project settings (auto-generated)
-│   ├── out/                                ← Compiled output (auto-generated)
-│   ├── web-app.iml                         ← IntelliJ module file
-│   └── lib/                                
+│   │   └── utils/                       # Utility classes (e.g., AuthUtils)
+│   │       └── AuthUtils.java
+│   ├── web/                             # Web content root
+│   │   ├── index.jsp                    # Landing page
+│   │   ├── login.jsp                    # Login page
+│   │   ├── register.jsp                 # Registration page
+│   │   ├── dashboard.jsp                # User dashboard (post-login)
+│   │   └── WEB-INF/
+│   │       └── web.xml                  # Deployment descriptor for Tomcat
+│   ├── lib/                             # Web app libraries (if any)
+│   ├── out/                             # Compiled files (ignored in Git)
+│   ├── .idea/                           # IntelliJ config (auto-generated)
+│   ├── web-app.iml                      # IntelliJ module file
 │
+├── sql/
+│   └── schema_postgresql.sql            # PostgreSQL schema (users table, etc.)
 │
+├── Student_WellnessDB/                 # JavaDB database (can be ignored in Git)
+├── .gitignore
+├── README.md
+└── LICENSE
+
 
 ```
-
 ---
 
 ## ✅ Features
